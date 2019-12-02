@@ -8,9 +8,11 @@ import axios from "axios";
 
 function ItemList() {
   const [pesquisa, setPesquisa] = useState("");
+  const [resultados, setResultados] = useState([]);
   const handleClick = async () => {
     const response = await axios.post("/pesquisar", { pesquisa: pesquisa });
-    console.log(response);
+    console.log(pesquisa);
+    setResultados([...resultados, response.data]);
   };
   return (
     <section class="conteiner flex">
@@ -32,7 +34,11 @@ function ItemList() {
         >
           Buscar
         </Button>
-
+        <ul>
+          {resultados.map(resultado => (
+            <li key={resultado}>{resultado}</li>
+          ))}
+        </ul>
         <Grid container spacing={24} style={{ padding: 24 }}></Grid>
       </div>
     </section>
