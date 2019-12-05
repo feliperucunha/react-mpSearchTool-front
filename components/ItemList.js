@@ -1,21 +1,43 @@
 import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Item from "../components/Item";
 import Button from "@material-ui/core/Button";
-import { normalize } from "path";
 import axios from "axios";
 
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
+
 function ItemList() {
+  const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+    paper: {
+      width: '100%',
+      overflowX: 'auto',
+    },
+    table: {
+      minWidth: 650,
+    },
+  });
+  const classes = useStyles();
   const [pesquisa, setPesquisa] = useState("");
   const [resultados, setResultados] = useState([]);
   const handleClick = async () => {
     const response = await axios.post("/pesquisar", { pesquisa: pesquisa });
-    //console.log(response.data); //diferente do data do backend
-    console.log(pesquisa);
+    console.log(response.data); //diferente do data do backend
     setPesquisa("");
-    setResultados([...resultados, response.data.pesquisa]);
+    setResultados([...resultados, response.data.res]); //res do backend
+
   };
+
+
   return (
     <section class="conteiner flex">
       <div>
