@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -17,15 +17,32 @@ function ItemList() {
     document.title = `Pesquisa MP`  //nome do site
   },[])
 
+  const StyledTableCell = withStyles(theme => ({
+    head: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+      fontSize: 16
+    },
+    body: {
+      fontSize: 14,
+    },
+  }))(TableCell);
+  
+  const StyledTableRow = withStyles(theme => ({
+    root: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.background.default,
+      },
+    },
+  }))(TableRow);
+
   const useStyles = makeStyles({
     root: {
       width: '100%',
       overflowX: 'auto',
-      textAlign: "left",
     },
     table: {
-      minWidth: 650,
-      textAlign: "left",
+      minWidth: 700,
     },
   });
 
@@ -45,6 +62,7 @@ function ItemList() {
   
 
   return (
+    
     <section className="conteiner flex">
       <div>
         <form onSubmit={handleSubmit}> 
@@ -68,7 +86,7 @@ function ItemList() {
             Buscar
           </Button>
 
-
+      
             {/*
             {resultado.length>0 && resultado.map((res,index)=><div key={index}><h1>
             Nome: {res[0]}</h1><h3>
@@ -76,25 +94,26 @@ function ItemList() {
             Arquivo: {res[2]}</span></div>)}
             */}
 
-            <Table className={classes.table} aria-label="simple table">
+          <Paper className={classes.root}>
+            <Table className={classes.table} aria-label="customized table" >
              <TableHead>
               <TableRow>
-                <TableCell align="center">Nome</TableCell>
-                <TableCell align="center">Link</TableCell>
+                <StyledTableCell variant='head' align="left">Nome</StyledTableCell>
+                <StyledTableCell variant='head' align="left">Link</StyledTableCell>
               </TableRow>
             </TableHead>
               <TableBody>
                 {resultado.length>0 && resultado.map(resultado => (
-                <TableRow key={resultado[0]}>
+                <TableRow key={resultado[0].replace(/b'|\n'|\r\n'|'|\n|\r\n/g, "").replace("\n'", "")}>
                   <TableCell component="th" scope="row">
-                    {resultado[0]}
+                    {resultado[0].replace(/b'|\n'|\r\n'|'|\n|\r\n/g, "").replace("\n'", "")}
                   </TableCell>
-                  <TableCell align="right"><a href="http://{resultado[1]}">{resultado[1]}</a></TableCell>
+                  <TableCell align='left'><a href="http://{resultado[1]}">{resultado[1]}</a></TableCell>
                 </TableRow>
                         ))}
               </TableBody>
             </Table>
-      
+          </Paper>              
 
           </form>
         </div>
