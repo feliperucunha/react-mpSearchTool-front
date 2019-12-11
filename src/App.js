@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './App.css';
 import NavBar from './components/NavBar'
 import ItemList from './components/ItemList'
+import BackToTop from './components/BackToTop'
 
 function App() {
 
@@ -10,6 +10,7 @@ function App() {
     <div>
       <NavBar />
       <ItemList />
+      <BackToTop />
     </div>
   );
 }
