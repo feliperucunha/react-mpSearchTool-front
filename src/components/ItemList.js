@@ -46,20 +46,25 @@ function ItemList() {
     },
   });
 
+  const [nome, link] = useState("");
+  const[nome2, link2] = useState("");
   const classes = useStyles();
   const [pesquisa, setPesquisa] = useState(""); //lista de repo que começa com lista vazia
   const [resultado, setResultado] = useState({}); //o set é uma função que atualiza o estado da lista
   const handleSubmit = async (e) => {
+    //setResultado("");
     e.preventDefault(); //previne o reload ao pressionar enter
     const response = await axios.post("/pesquisar", { pesquisa: pesquisa });
     console.log(response.data.res); //diferente do data do backend, mostra o dado que chega no console.log
-    setPesquisa("");
+   //setPesquisa(""); //faz não acumular pesquisas
     //setResultados([...resultados, response.data.res]); //res do backend
     setResultado(response.data.res);
-
+    link("Nome")
+    link2("Link")
   };
+  //const handleRefresh = async(a) => {window.location.reload()} ;
+ 
 
-  
 
   return (
     
@@ -72,20 +77,20 @@ function ItemList() {
             id="searchInput"
             placeholder="Procure pelo nome"
             margin="normal"
-            onChange={e => setPesquisa(e.target.value)} 
+            onChange={e => setPesquisa(e.target.value)} //input
+            
           />
 
           <Button
-            type="submit"
-            onClick={handleSubmit}
-            //onKeyPress={handleClick}
+            type="submit" //pra funcionar o Enter
+            onClick={handleSubmit} //faz o botão funcionar
             variant="outlined"
             color="secondary"
+            //onClick={handleRefresh}
             style={{ margin: 45 }}
           >
             Buscar
           </Button>
-
       
             {/*
             {resultado.length>0 && resultado.map((res,index)=><div key={index}><h1>
@@ -98,17 +103,19 @@ function ItemList() {
             <Table className={classes.table} aria-label="customized table" >
              <TableHead>
               <TableRow>
-                <StyledTableCell variant='head' align="left">Nome</StyledTableCell>
-                <StyledTableCell variant='head' align="left">Link</StyledTableCell>
+                <StyledTableCell variant='head' align="left">{nome}</StyledTableCell>
+                <StyledTableCell variant='head' align="left">{link}</StyledTableCell>
+                <StyledTableCell variant='head' align='left'>{link2}</StyledTableCell>
+                <StyledTableCell variant='head' align="left">{nome2}</StyledTableCell>
               </TableRow>
             </TableHead>
               <TableBody>
-                {resultado.length>0 && resultado.map(resultado => (
-                <TableRow key={resultado[0].replace(/b'|\n'|\r\n'|'|\n|\r\n/g, "").replace("\n'", "")}>
+                {resultado.length>0 && resultado.map((resultado,index) => (
+                <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     {resultado[0].replace(/b'|\n'|\r\n'|'|\n|\r\n/g, "").replace("\n'", "")}
                   </TableCell>
-                  <TableCell align='left'><a href="http://{resultado[1]}">{resultado[1]}</a></TableCell>
+                  <TableCell align='right'><a href="http://{resultado[1]}">{resultado[1]}</a></TableCell>
                 </TableRow>
                         ))}
               </TableBody>

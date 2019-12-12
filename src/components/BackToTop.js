@@ -32,13 +32,13 @@ function ScrollTop(props) {
     const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
 
     if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      anchor.scrollIntoView({ behavior: 'smooth', alignToTop:true });
     }
   };
 
   return (
     <Zoom in={trigger}>
-      <div onClick={handleClick} role="presentation" className={classes.root}>
+      <div role="presentation" className={classes.root}>
         {children}
       </div>
     </Zoom>
@@ -61,7 +61,7 @@ export default function BackToTop(props) {
       </Container>
       <ScrollTop {...props}>
         <Fab color="secondary" size="small" aria-label="scroll back to top">
-         <KeyboardArrowUpIcon />
+         <a onClick={()=>window.scrollTo(0,0)}><KeyboardArrowUpIcon /></a>
         </Fab>
       </ScrollTop>
     </React.Fragment>
