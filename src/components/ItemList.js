@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,8 +9,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
+
 
 
 
@@ -49,63 +48,7 @@ function ItemList() {
     },
   });
 
-  const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
-      align: 'right',
-      format: value => value.toLocaleString(),
-    },
-    {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: value => value.toLocaleString(),
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: value => value.toFixed(2),
-    },
-  ];
-
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
-
   const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('a', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('b Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('c', 'BR', 210147125, 8515767),
-        createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
   ];
 
 
@@ -120,8 +63,7 @@ function ItemList() {
     setPage(0);
    };
 
-  const [nome, link] = useState("");
-  const[nome2, link2] = useState("");
+
   const classes = useStyles();
   const [pesquisa, setPesquisa] = useState(""); //lista de repo que começa com lista vazia
   const [resultado, setResultado] = useState({}); //o set é uma função que atualiza o estado da lista
@@ -133,12 +75,7 @@ function ItemList() {
    //setPesquisa(""); //faz não acumular pesquisas
     //setResultados([...resultados, response.data.res]); //res do backend
     setResultado(response.data.res);
-    link("Nome")
-    link2("Link")
-
   };
-
- 
 
 
   return (
@@ -153,7 +90,6 @@ function ItemList() {
             placeholder="Procure pelo nome"
             margin="normal"
             onChange={e => setPesquisa(e.target.value)} //input
-            
           />
 
           <Button
@@ -176,62 +112,34 @@ function ItemList() {
           <Paper className={classes.root}>
             <Table className={classes.table} aria-label="customized table" >
              <TableHead>
-              <TableRow>
-                <StyledTableCell variant='head' align="left">Nome</StyledTableCell>
-                <StyledTableCell variant='head' align="right">Link</StyledTableCell>
-
-              </TableRow>
-            </TableHead>
+                <TableRow>
+                  <StyledTableCell variant='head' align="left">Nome</StyledTableCell>
+                  <StyledTableCell variant='head' align="right">Link</StyledTableCell>
+                </TableRow>
+              </TableHead>
               <TableBody>
-
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+              {resultado.length>0&&resultado.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((resultado,index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map(column => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-              </TableRow> );})}
-
-
-              {resultado.length>0 && resultado.map((resultado,index) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                  <TableCell component="th" scope="row">
-                    {resultado[0].replace(/b'|\n'|\r\n'|'|\n|\r\n/g, "").replace("\n'", "")}
-                  </TableCell>
-                  <TableCell align='right'><a href="http://{resultado[1]}">{resultado[1]}</a>
-                    </TableCell>
-                </TableRow> );})}
-
-
-              {resultado.length>0 && resultado.map((resultado,index) => (
-              <TableRow key={index}>
+                <TableRow key={index}>
                 <TableCell component="th" scope="row">
                    {resultado[0].replace(/b'|\n'|\r\n'|'|\n|\r\n/g, "").replace("\n'", "")}
                  </TableCell>
                 <TableCell align='right'><a href="http://{resultado[1]}">{resultado[1]}</a>
                    </TableCell>
-               </TableRow>
-                       ))}
+               </TableRow> );})}
               </TableBody>
             </Table>
             <TablePagination
         rowsPerPageOptions={[15, 30, 100]}
         labelRowsPerPage='Itens por página:'
         component="div"
-        count={rows.length}
+        count={resultado.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
           </Paper>              
-
           </form>
         </div>
       </section>
